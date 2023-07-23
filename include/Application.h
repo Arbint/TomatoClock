@@ -29,7 +29,21 @@ namespace TC
         Application(const ApplicationDef& def);
         void Run();
     private:
-        //VideoMode mode, const String& title, Uint32 style = Style::Default, const ContextSettings& settings = ContextSettings()
+        void InitializeComponents();
+        void Tick();
+        void NativeRender();
+        void Render();
+        std::string GetClockTime();
+    private:
+
         sf::RenderWindow window;
+        
+        sf::Clock clock;
+        sf::Clock tickClock;
+
+        sf::Sprite tomatoSprite;
+        sf::Text clockText;
+
+        float tickInterval;
     };
 }

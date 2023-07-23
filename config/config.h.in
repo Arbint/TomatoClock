@@ -1,0 +1,51 @@
+#pragma once
+#include <string>
+#ifdef WIN32
+	#ifdef NDEBUG
+		// Release mode code
+		std::string GetResouceDir()
+		{
+			return "@RESOURCE_FOLDER_NAME@";
+		}
+	#else
+		// Debug mode code
+		std::string GetResouceDir()
+		{
+			return "@RESOURCE_SRC_DIR@";
+		}
+	#endif
+
+#elif __APPLE__
+    #include "CoreFoundation/CoreFoundation.h"
+    #ifdef NDEBUG
+		std::string GetResouceDir()
+		{
+			printf("finding path \"@RESOURCE_FOLDER_NAME@\" using core foundation ...\n");
+			CFURLRef folderUrlRef;
+			folderUrlRef = CFBundleCopyResourceURL(CFBundleGetMainBundle(), CFSTR("@RESOURCE_FOLDER_NAME@"), NULL, NULL);
+
+			if (folderUrlRef != NULL) {
+				// Convert the CFURL to a file system path string
+				char path[PATH_MAX];
+				if (CFURLGetFileSystemRepresentation(folderUrlRef, true, (UInt8 *)path, PATH_MAX))
+				{
+					// Do something with the file path
+					printf("Folder path: %s\n", path);
+				}
+				
+				// Release the CFURL reference
+				CFRelease(folderUrlRef);
+				return std::string{path};
+			} else 
+			{
+				printf("cannot find folder path: @RESOURCE_FOLDER_NAME@\n");
+				return "@RESOURCE_SRC_DIR@";
+			}
+		}
+    #else
+		std::string GetResouceDir()
+		{
+			return "@RESOURCE_SRC_DIR@";
+		}
+    #endif
+#endif

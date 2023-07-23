@@ -20,6 +20,7 @@ set(MACOSX_BUNDLE_LONG_VERSION_STRING "1.0.0")
 set(MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0")
 set(MACOSX_BUNDLE_BUNDLE_NAME "TomatoClock")
 set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.jingtian.TomatoClock")
+
 #-----------
 
 #Fetch External Libraries
@@ -57,6 +58,14 @@ Set(TOMATO_TARGET_SRCS
 
     "${CMAKE_CURRENT_SOURCE_DIR}/include/Application.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Application.cpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/assetManager.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/assetManager.cpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/core.h"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/utilities.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/utilitites.cpp"
 )
 
 Set(TOMATO_TARGET_INCLUDE_DIR
@@ -80,3 +89,39 @@ CopyLibToTarget(sfml-audio ${TOMATO_TARGET_NAME})
 CopyLibToTarget(sfml-graphics ${TOMATO_TARGET_NAME})
 CopyLibToTarget(sfml-system ${TOMATO_TARGET_NAME})
 CopyLibToTarget(sfml-window ${TOMATO_TARGET_NAME})
+
+
+
+
+#resources
+set(RESOURCE_FOLDER_NAME
+    assets
+)
+
+set(RESOURCE_SRC_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/${RESOURCE_FOLDER_NAME}
+)
+
+#copy assets to the build destination
+add_custom_command(
+    TARGET ${TOMATO_TARGET_NAME}
+    POST_BUILD
+    COMMAND
+    ${CMAKE_COMMAND} -E copy_directory
+    ${RESOURCE_SRC_DIR}
+    $<TARGET_FILE_DIR:${TOMATO_TARGET_NAME}>/${RESOURCE_FOLDER_NAME}
+)
+
+#where to load the assets/resources are defined in the config file.
+configure_file(
+    "config/config.h.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/config.h" ESCAPE_QUOTES
+)
+
+#link the core foundation lib when building for MacOS
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    # Find the Core Foundation framework
+    find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+    # Link the Core Foundation framework to your target
+    target_link_libraries(${TOMATO_TARGET_NAME} PUBLIC ${COREFOUNDATION_LIBRARY})
+endif()
