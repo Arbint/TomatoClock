@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "core.h"
 
 namespace TC
@@ -19,7 +20,7 @@ namespace TC
 
 		Shared<sf::Texture> LoadTexture(const std::string& textureName);
 		Shared<sf::Font> LoadFont(const std::string& fontName);
-
+		Shared<sf::SoundBuffer> LoadAudio(const std::string& audioName);
 		void Init(const std::string& assetPath);
 		void CleanUnusedAssets();
 		const std::string& GetAssetPath() const { return assetPath; }
@@ -29,6 +30,7 @@ namespace TC
 
 		std::map<std::string, Shared<sf::Texture>> LoadedTextures;
 		std::map<std::string, Shared<sf::Font>> LoadedFonts;
+		std::map<std::string, Shared<sf::SoundBuffer>> LoadedAudio;
 
 		static AssetManager* manager;
 

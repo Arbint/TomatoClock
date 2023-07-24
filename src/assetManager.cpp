@@ -62,7 +62,26 @@ namespace TC
 		return nullptr;
 	}
 
-	void AssetManager::Init(const std::string& assetPath)
+    Shared<sf::SoundBuffer> AssetManager::LoadAudio(const std::string &audioName)
+    {
+        auto found = LoadedAudio.find(audioName);
+		if(found != LoadedAudio.end())
+		{
+			return (*found).second;
+		}
+
+		Shared<sf::SoundBuffer> soundBuffer{new sf::SoundBuffer};
+		std::string fullPath = assetPath + '/' + audioName;
+		if(soundBuffer->loadFromFile(fullPath))
+		{
+			LoadedAudio.insert(std::make_pair(audioName, soundBuffer));
+			return soundBuffer;
+		}else{
+			//LOG("Cannot load reource: %s", audioName.c_str());
+		}
+    }
+
+    void AssetManager::Init(const std::string& assetPath)
 	{
 		this->assetPath = assetPath;
 	}

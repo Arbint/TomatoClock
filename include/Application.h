@@ -42,8 +42,13 @@ namespace TC
         bool IsMouseOnButton() const;
         void SetButtonText(const std::string& newText);
         
+        //start a new counting using the displayed time as the duration.
+        void StartNewCounting();
+
+        //restart the couting using the previously set counting duration.
+        void ReStartCounting();
+
         void SwithToSettingState();
-        void SwithToCountingState();
         void SwithToAleartState();
 
         float GetDeltaTime() const {return deltaTime; }
@@ -51,14 +56,15 @@ namespace TC
         //get a copy of current time
         std::tm GetCurrentCountingTime() const {return *countingTime;}
         void SetCurrentCountingTime(const std::tm& newTime);
-
+        
     private:
+        void SwithToCountingState();
         void InitializeComponents();
         void Tick();
         void NativeRender();
         void Render();
         void SetState(const Shared<State>& newState);
-        std::string TimeSettingAsString();
+        std::string CountingTimeAsString();
         void HandleEvent(const sf::Event& event);
         
     private:

@@ -7,6 +7,7 @@
 #include "state.h"
 #include "settingState.h"
 #include "countingState.h"
+#include "alertState.h"
 
 namespace TC
 {
@@ -142,6 +143,18 @@ namespace TC
         ButtonText.setPosition(Button.getPosition()-sf::Vector2f{0.f, ButtonText.getGlobalBounds().height/2.f});
     }
 
+    void Application::StartNewCounting()
+    {
+        timeSetting = *countingTime;
+        SwithToCountingState();
+    }
+
+    void Application::ReStartCounting()
+    {
+        *countingTime = timeSetting;
+        SwithToCountingState();
+    }
+
     void Application::SwithToSettingState()
     {
         SetState(settingState);
@@ -199,6 +212,7 @@ namespace TC
         SetState(settingState);
 
         countingState = std::make_shared<CountingState>();
+        alertState = std::make_shared<AlertState>();
     }
 
     void Application::Tick()
@@ -208,7 +222,7 @@ namespace TC
             currentState.lock()->TickState(this);
         }
 
-        clockText.setString(TimeSettingAsString());
+        clockText.setString(CountingTimeAsString());
     }
 
     void Application::NativeRender()
@@ -251,7 +265,7 @@ namespace TC
         }
     }
 
-    std::string Application::TimeSettingAsString()
+    std::string Application::CountingTimeAsString()
     {
         char buffer[9];
         std::strftime(buffer, 9, "%H:%M:%S", countingTime.get());
