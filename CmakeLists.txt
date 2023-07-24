@@ -72,6 +72,12 @@ Set(TOMATO_TARGET_SRCS
 
     "${CMAKE_CURRENT_SOURCE_DIR}/include/settingState.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/settingState.cpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/countingState.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/countingState.cpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/alertState.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/alertState.cpp"
 )
 
 Set(TOMATO_TARGET_INCLUDE_DIR

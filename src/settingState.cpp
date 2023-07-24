@@ -5,7 +5,14 @@
 namespace TC
 {
     SettingState::SettingState()
-        : State{},hourUpArrow{}, hourDownArrow{}, minuteUpArrow{}, minuteDownArrow{}, secondUpArrow{}, secondDownArrow{}
+        : State{},
+        hourUpArrow{}, 
+        hourDownArrow{},
+        minuteUpArrow{}, 
+        minuteDownArrow{},
+        secondUpArrow{},
+        secondDownArrow{},
+        timeSetting{}
     {
         Shared<sf::Texture> arrowTexture = AssetManager::Get().LoadTexture("arrow.png");
         float startPosX = 240.f;
@@ -29,6 +36,8 @@ namespace TC
             if(app->IsMouseOnButton())
             {
                 app->SwithToCountingState();
+                //TODO: do we need to update whenever counting time is changed? or we update it when we start couting state??
+                timeSetting = app->GetCurrentCountingTime();
             }
 
             if(app->IsMouseOnSprite(hourUpArrow))
@@ -66,6 +75,7 @@ namespace TC
     void SettingState::OnStateSet(Application *app)
     {
         app->SetButtonText("Start");
+        app->SetCurrentCountingTime(timeSetting);
     }
 
     void SettingState::OnStateOff(Application *app)

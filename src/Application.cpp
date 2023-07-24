@@ -6,6 +6,8 @@
 #include <time.h>
 #include "state.h"
 #include "settingState.h"
+#include "countingState.h"
+
 namespace TC
 {
     Application::Application(const ApplicationDef& def)
@@ -21,7 +23,9 @@ namespace TC
          currentState{},
          Button{},
          ButtonText{},
-         timeSetting{new std::tm{}}
+         countingTime{new std::tm{}},
+         timeSetting{},
+         deltaTime{0.f}
     {
         InitializeComponents();
     }
@@ -45,6 +49,7 @@ namespace TC
 
             if(tickClock.getElapsedTime().asSeconds() > tickInterval)
             {
+                deltaTime = tickClock.restart().asSeconds();
                 Tick();
                 NativeRender();
             }
@@ -69,10 +74,10 @@ namespace TC
 
     bool Application::IncrementHour(int amt)
     {
-        timeSetting->tm_hour+=amt;
-        if(timeSetting->tm_hour<0)
+        countingTime->tm_hour+=amt;
+        if(countingTime->tm_hour<0)
         {
-            timeSetting->tm_hour = 0;
+            countingTime->tm_hour = 0;
             return false;
         }
         return true;
@@ -80,21 +85,21 @@ namespace TC
 
     bool Application::IncrementMinute(int amt)
     {
-        timeSetting->tm_min += amt;
-        while (timeSetting->tm_min>=60)
+        countingTime->tm_min += amt;
+        while (countingTime->tm_min>=60)
         {
-            timeSetting->tm_min -= 60;
+            countingTime->tm_min -= 60;
             IncrementHour(1);
         }
 
-        while(timeSetting->tm_min<0)
+        while(countingTime->tm_min<0)
         {
             if(IncrementHour(-1))
             {
-                timeSetting->tm_min+=60;
+                countingTime->tm_min+=60;
             }else
             {
-                timeSetting->tm_min = 0;
+                countingTime->tm_min = 0;
                 return false;
             }
         }
@@ -103,21 +108,21 @@ namespace TC
 
     bool Application::IncrementSec(int amt)
     {
-        timeSetting->tm_sec += amt;
-        while (timeSetting->tm_sec>=60)
+        countingTime->tm_sec += amt;
+        while (countingTime->tm_sec>=60)
         {
-            timeSetting->tm_sec -= 60;
+            countingTime->tm_sec -= 60;
             IncrementMinute(1);
         }
 
-        while(timeSetting->tm_sec<0)
+        while(countingTime->tm_sec<0)
         {
             if(IncrementMinute(-1))
             {
-                 timeSetting->tm_sec+=60;
+                 countingTime->tm_sec+=60;
             }else
             {
-                timeSetting->tm_sec = 0;
+                countingTime->tm_sec = 0;
                 return false;
             }
         }
@@ -150,6 +155,11 @@ namespace TC
     void Application::SwithToAleartState()
     {
         SetState(alertState);
+    }
+
+    void Application::SetCurrentCountingTime(const std::tm &newTime)
+    {
+        *countingTime = newTime;
     }
 
     void Application::InitializeComponents()
@@ -187,6 +197,8 @@ namespace TC
         //states
         settingState = std::make_shared<SettingState>();
         SetState(settingState);
+
+        countingState = std::make_shared<CountingState>();
     }
 
     void Application::Tick()
@@ -242,7 +254,7 @@ namespace TC
     std::string Application::TimeSettingAsString()
     {
         char buffer[9];
-        std::strftime(buffer, 9, "%H:%M:%S", timeSetting.get());
+        std::strftime(buffer, 9, "%H:%M:%S", countingTime.get());
         return std::string(buffer, buffer + 8);
     }
     

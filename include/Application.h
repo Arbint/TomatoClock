@@ -45,6 +45,13 @@ namespace TC
         void SwithToSettingState();
         void SwithToCountingState();
         void SwithToAleartState();
+
+        float GetDeltaTime() const {return deltaTime; }
+        
+        //get a copy of current time
+        std::tm GetCurrentCountingTime() const {return *countingTime;}
+        void SetCurrentCountingTime(const std::tm& newTime);
+
     private:
         void InitializeComponents();
         void Tick();
@@ -73,6 +80,9 @@ namespace TC
         sf::Sprite Button;
         sf::Text ButtonText;
 
-        Shared<std::tm> timeSetting;
+        Shared<std::tm> countingTime;
+        std::tm timeSetting;
+
+        float deltaTime;
     };
 }
