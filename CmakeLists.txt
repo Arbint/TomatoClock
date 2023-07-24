@@ -66,6 +66,12 @@ Set(TOMATO_TARGET_SRCS
 
     "${CMAKE_CURRENT_SOURCE_DIR}/include/utilities.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/utilitites.cpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/state.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/state.cpp"
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/settingState.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/settingState.cpp"
 )
 
 Set(TOMATO_TARGET_INCLUDE_DIR

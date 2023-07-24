@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include <stdexcept>
-
+#include <SFML/Graphics.hpp>
 namespace TC
 {
     template<typename ... Args>

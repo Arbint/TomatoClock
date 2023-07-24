@@ -1,8 +1,12 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include <string>
+#include "core.h"
+
 namespace TC
 {
+    class State;
+
     struct ApplicationDef
     {
     public:
@@ -27,15 +31,30 @@ namespace TC
     {
     public:
         Application(const ApplicationDef& def);
+        ~Application();
         void Run();
+        bool IsMouseOnSprite(const sf::Sprite& sprite) const;
+        bool IsSpriteClicked(const sf::Sprite& sprite) const;
+        
+        bool IncrementHour(int amt);
+        bool IncrementMinute(int amt);
+        bool IncrementSec(int amt);
+        bool IsMouseOnButton() const;
+        void SetButtonText(const std::string& newText);
+        
+        void SwithToSettingState();
+        void SwithToCountingState();
+        void SwithToAleartState();
     private:
         void InitializeComponents();
         void Tick();
         void NativeRender();
         void Render();
-        std::string GetClockTime();
+        void SetState(const Shared<State>& newState);
+        std::string TimeSettingAsString();
+        void HandleEvent(const sf::Event& event);
+        
     private:
-
         sf::RenderWindow window;
         
         sf::Clock clock;
@@ -45,5 +64,15 @@ namespace TC
         sf::Text clockText;
 
         float tickInterval;
+
+        Shared<State> settingState;
+        Shared<State> countingState;
+        Shared<State> alertState;
+        WeakRef<State> currentState;
+
+        sf::Sprite Button;
+        sf::Text ButtonText;
+
+        Shared<std::tm> timeSetting;
     };
 }

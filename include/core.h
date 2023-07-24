@@ -6,7 +6,8 @@ namespace TC
 {
     template<typename T>
     using Shared = std::shared_ptr<T>;
-
+    template<typename T>
+    using WeakRef = std::weak_ptr<T>;
     template<typename T>
     using PrivateProp = std::unique_ptr<T>;
 
