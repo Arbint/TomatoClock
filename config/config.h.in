@@ -14,6 +14,20 @@
 			return "@RESOURCE_SRC_DIR@";
 		}
 	#endif
+#elif __linux__
+  #ifdef NDEBUG
+		// Release mode code
+		std::string GetResouceDir()
+		{
+			return "@RESOURCE_FOLDER_NAME@";
+		}
+  #else
+		// Debug mode code
+		std::string GetResouceDir()
+		{
+			return "@RESOURCE_SRC_DIR@";
+		}
+  #endif
 
 #elif __APPLE__
     #include "CoreFoundation/CoreFoundation.h"

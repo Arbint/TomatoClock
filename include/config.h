@@ -11,9 +11,23 @@
 		// Debug mode code
 		std::string GetResouceDir()
 		{
-			return "/Users/jingtianli/Desktop/dev/TomatoClock/assets";
+			return "/home/jingtian/dev/TomatoClock/assets";
 		}
 	#endif
+#elif __linux__
+  #ifdef NDEBUG
+		// Release mode code
+		std::string GetResouceDir()
+		{
+			return "assets";
+		}
+  #else
+		// Debug mode code
+		std::string GetResouceDir()
+		{
+			return "/home/jingtian/dev/TomatoClock/assets";
+		}
+  #endif
 
 #elif __APPLE__
     #include "CoreFoundation/CoreFoundation.h"
@@ -39,13 +53,13 @@
 			} else 
 			{
 				printf("cannot find folder path: assets\n");
-				return "/Users/jingtianli/Desktop/dev/TomatoClock/assets";
+				return "/home/jingtian/dev/TomatoClock/assets";
 			}
 		}
     #else
 		std::string GetResouceDir()
 		{
-			return "/Users/jingtianli/Desktop/dev/TomatoClock/assets";
+			return "/home/jingtian/dev/TomatoClock/assets";
 		}
     #endif
 #endif
