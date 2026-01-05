@@ -11,7 +11,7 @@
 		// Debug mode code
 		std::string GetResouceDir()
 		{
-			return "/home/jingtian/dev/TomatoClock/assets";
+			return "C:/dev/TomatoClock/assets";
 		}
 	#endif
 #elif __linux__
@@ -25,7 +25,7 @@
 		// Debug mode code
 		std::string GetResouceDir()
 		{
-			return "/home/jingtian/dev/TomatoClock/assets";
+			return "C:/dev/TomatoClock/assets";
 		}
   #endif
 
@@ -53,13 +53,13 @@
 			} else 
 			{
 				printf("cannot find folder path: assets\n");
-				return "/home/jingtian/dev/TomatoClock/assets";
+				return "C:/dev/TomatoClock/assets";
 			}
 		}
     #else
 		std::string GetResouceDir()
 		{
-			return "/home/jingtian/dev/TomatoClock/assets";
+			return "C:/dev/TomatoClock/assets";
 		}
     #endif
 #endif

@@ -1,3 +1,4 @@
+set(CMAKE_POLICY_VERSION_MINIMUM "3.5")
 cmake_minimum_required(VERSION 3.26.3)
 
 project(TomatoClock
@@ -45,6 +46,16 @@ function(CopyLibToTarget LIB_NAME TARGET_NAME)
     COMMAND
     ${CMAKE_COMMAND} -E copy_if_different
     $<TARGET_FILE:${LIB_NAME}>
+    $<TARGET_FILE_DIR:${TARGET_NAME}>
+    )
+endfunction()
+
+function(CopyFileToTarget FILE_PATH TARGET_NAME)
+    add_custom_command(TARGET ${TARGET_NAME}
+    POST_BUILD
+    COMMAND
+    ${CMAKE_COMMAND} -E copy_if_different
+    ${FILE_PATH}
     $<TARGET_FILE_DIR:${TARGET_NAME}>
     )
 endfunction()
@@ -102,8 +113,10 @@ CopyLibToTarget(sfml-graphics ${TOMATO_TARGET_NAME})
 CopyLibToTarget(sfml-system ${TOMATO_TARGET_NAME})
 CopyLibToTarget(sfml-window ${TOMATO_TARGET_NAME})
 
-
-
+#Copy OpenAL lib to the build directory, some windows system do not have it. (TODO: Linux probably need to install a whole lot more...):
+if (WIN32)
+    CopyFileToTarget("${CMAKE_CURRENT_SOURCE_DIR}/vendor/OpenAL/bin/OpenAL32.dll" ${TOMATO_TARGET_NAME})
+endif()
 
 #resources
 set(RESOURCE_FOLDER_NAME
